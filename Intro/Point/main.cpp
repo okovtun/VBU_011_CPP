@@ -7,6 +7,8 @@ using std::endl;
 #define tab "\t"
 #define delimiter "\n------------------------------------------------------------\n"
 
+//#define CONSTRUCTORS_OVERLOADING
+
 class Point
 {
 	double x;
@@ -30,6 +32,7 @@ public:
 	}
 
 	//			Constructors:
+#ifdef CONSTRUCTORS_OVERLOADING
 	Point()
 	{
 		//Конструктор по умолчанию
@@ -43,7 +46,9 @@ public:
 		this->y = 0;
 		cout << "SingleArgumentConstructor:\t" << this << endl;
 	}
-	Point(double x, double y)
+#endif // CONSTRUCTORS_OVERLOADING
+
+	Point(double x = 0, double y = 0)
 	{
 		this->x = x;
 		this->y = y;
@@ -171,7 +176,7 @@ void main()
 #endif // CONSTRUCTORS_CHECK
 
 #ifdef ASSIGNMENT_CHECK
-	
+
 	int a, b, c;
 	a = b = c = 0;
 	cout << a << tab << b << tab << c << endl;
@@ -186,6 +191,30 @@ void main()
 #endif // ASSIGNMENT_CHECK
 
 }
+
+/*
+--------------------------------------------------------------
+				ПРАВИЛА ПЕРЕГРУЗКИ ОПЕРАТОРОВ:
+1. Перегрузить можно только существующие операторы:
+	+  - перегружается;
+	++ - перегружается;
+	*  - перегружается;
+	** - НЕ перегружается;
+2. НЕ все существующие операторы можно перегрузить.
+   НЕ перегружаются:
+   ?: - conditional ternary operator;
+   :: - scope operator;
+   .  - Point operator;
+   .* - Pointer to member selection;
+   #  - 
+   ## - 
+3. Перегруженные операторы сохраняют приоритет и ассоциативность;
+4. Нельзя переопределить поведение операторов со всроенными типами;
+--------------------------------------------------------------
+++, +=, = - Могут изменять операнды
++, -, ==, != - НЕ могут изменять свои операнды.
+--------------------------------------------------------------
+*/
 
 /*
 ------------------------------------------------------------
