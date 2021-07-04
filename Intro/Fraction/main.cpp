@@ -1,5 +1,11 @@
 ﻿#include<iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
+
+class Fraction;	//Объявление класса (Class declaration)
+Fraction operator*(Fraction left, Fraction right);
 
 class Fraction
 {
@@ -40,7 +46,7 @@ public:
 		this->denominator = 1;
 		cout << "DefaultConstruct:" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
@@ -82,6 +88,33 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
+	Fraction& operator*=(const Fraction& other)
+	{
+		/*int a = 2;
+		int b = 3;
+		a *= b;
+		a = a * b;*/
+		return *this = *this*other;
+		//Возвращает результат операции по ссылке, поскольку результат сохраняется в this,
+		//следовательно this является результатом.
+		//this - это указатель на объект, для которого вызывается метод.
+		//Для того чтобы вызвать метод, объект должен быть уже создан,
+		//то есть объект появляется раньше, чем для него вызывается метод,
+		//и после того, как метод отработал, с объектом для которого он вызвался (this)
+		//ничего не происходит, он никуда не девается и не удаляется, так как объекты 
+		//может удалять только деструктор.
+		//Поскольку этот объект никуда не девается после отработки метода, мы можем вернуть его
+		//по ссылке (by reference), чтобы не создавать копию этого объекта.
+	}
+	Fraction& MultiplyAndAssign(const Fraction& other)
+	{
+		/*int a = 2;
+		int b = 3;
+		a *= b;
+		a = a * b;*/
+		return *this = *this*other;
+	}
+
 
 	//				Increment/Decrement:
 	Fraction& operator++()		//Prefix increment
@@ -96,16 +129,33 @@ public:
 		return old;	//CopyConstructor
 	}
 
+	//			Type-cast operators:
+	explicit operator int()
+	{
+		return integer;
+	}
+
 	//			Methods:
-	void to_improper()
+	Fraction& to_improper()
 	{
 		numerator += integer * denominator;
 		integer = 0;
+		return *this;
 	}
-	void to_proper()
+	Fraction& to_proper()
 	{
 		integer += numerator / denominator;
 		numerator %= denominator;
+		return *this;
+	}
+	Fraction inverted()	//Обращает дробь - меняет местами числитель и знаменатель
+	{
+		to_improper();
+		/*int buffer = numerator;
+		numerator = denominator;
+		denominator = buffer;
+		return *this;*/
+		return Fraction(denominator, numerator);
 	}
 	void print()const
 	{
@@ -118,7 +168,52 @@ public:
 	}
 };
 
+Fraction operator+(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	/*Fraction sum
+	(
+		left.get_numerator()*right.get_denominator() + right.get_numerator()*left.get_denominator(),
+		left.get_denominator()*right.get_denominator()
+	);
+	sum.to_proper();
+	return sum;*/
+
+	return Fraction
+	(
+		left.get_numerator()*right.get_denominator() + right.get_numerator()*left.get_denominator(),
+		left.get_denominator()*right.get_denominator()
+	).to_proper();
+}
+
 Fraction operator*(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	/*Fraction result;
+	result.set_numerator(left.get_numerator()*right.get_numerator());
+	result.set_denominator(left.get_denominator()*right.get_denominator());*/
+	Fraction result
+	(
+		left.get_numerator()*right.get_numerator(),
+		left.get_denominator()*right.get_denominator()
+	);
+	result.to_proper();
+	//result - это локальный объект, он объявлен в функции oprtator*, 
+	//и сущестует только в этой функции, и по завершении этой функции
+	//result будет удален из памяти, и если вернуть ссылку на этот локальный объект,
+	//то на месте вызова мы получим мусор.
+	//Поэтому возвращаем объект по значению, чтобы скопровать его не место вызова.
+	return result;
+	//return Fraction	//Здесь мы явно вызываем конструктор, который создает временный безымянный объект, с нужным нам результатом
+	//(
+	//	left.get_numerator()*right.get_numerator(),
+	//	left.get_denominator()*right.get_denominator()
+	//);
+}
+
+Fraction multiply(Fraction left, Fraction right)
 {
 	left.to_improper();
 	right.to_improper();
@@ -131,12 +226,29 @@ Fraction operator*(Fraction left, Fraction right)
 		left.get_denominator()*right.get_denominator()
 	);
 	return result;*/
-
 	return Fraction	//Здесь мы явно вызываем конструктор, который создает временный безымянный объект, с нужным нам результатом
 	(
 		left.get_numerator()*right.get_numerator(),
 		left.get_denominator()*right.get_denominator()
 	);
+}
+
+
+Fraction operator/(Fraction left, Fraction right)
+{
+	/*left.to_improper();
+	right.to_improper();
+	Fraction result
+	(
+		left.get_numerator()*right.get_denominator(),
+		left.get_denominator()*right.get_numerator()
+	);
+	return result;*/
+
+	Fraction result = left * right.inverted();
+	return result;
+
+	//return left * right.inverted();
 }
 
 int dva_plus_dva()
@@ -145,6 +257,13 @@ int dva_plus_dva()
 }
 
 //#define CONSTRUCTORS_CHECK
+//#define INCREMENT_CHECK
+//#define ARITHMETICAL_OPERATORS_CHECK
+//#define COMPOUND_ASSIGNMENTS_CHECK
+//#define OPTIMISATION_CHECK
+//#define TYPE_CONVERSIONS
+#define TYPE_CONVERSIONS_HOME_WORK
+
 
 void main()
 {
@@ -169,15 +288,27 @@ void main()
 	cout << dva_plus_dva << endl;
 #endif // CONSTRUCTORS_CHECK
 
+#ifdef ARITHMETICAL_OPERATORS_CHECK
 	int a = 2;
 	int b = 3;
 	int c = a * b;
+	int d = a / b;
+	int e = a + b;
 
 	Fraction A(2, 3, 4);
 	Fraction B(3, 4, 5);
 	Fraction C = A * B;
 	C.print();
+	Fraction D = A / B;
+	D.print();
 
+	Fraction E = A + B;
+	E.print();
+
+	(A + B).print();
+#endif // ARITHMETICAL_OPERATORS_CHECK
+
+#ifdef INCREMENT_CHECK
 	for (double i = .25; i < 10; i++)
 	{
 		cout << i << "\t";
@@ -188,11 +319,79 @@ void main()
 	{
 		i.print();
 	}
+#endif // INCREMENT_CHECK
 
-	/*A.print();
-	A.to_improper();
+#ifdef COMPOUND_ASSIGNMENTS_CHECK
+	Fraction A(2, 3, 4);
+	Fraction B(3, 4, 5);
+	A *= B;	//Неявный вызов оператора (implicit operator call)
+	A.operator*=(B);	//Явный вызов оператора (explicit operator call)
+	A.MultiplyAndAssign(B);
 	A.print();
-	A.to_proper();
-	A.print();*/
+
+	A*B;			//Неявный вызов оператора (implicit operator call)
+	operator*(A, B);//Явный вызов оператора (explicit operator call)
+	multiply(A, B);
+#endif // DEBUG
+
+#ifdef OPTIMISATION_CHECK
+	Fraction A(2, 3, 4);
+	Fraction B(3, 4, 5);
+	cout << "\n------------------------------------\n";
+	Fraction C = A * B;
+	cout << "\n------------------------------------\n";
+	C.print();
+#endif // OPTIMISATION_CHECK
+
+#ifdef TYPE_CONVERSIONS
+	//(type)value; - C-like notation
+//type(value); - Functional notation
+//Warning: ... possible loss of data;
+//int a = 2;		//No conversions
+//double b = 3;	//From int to double (From less to more)
+//int c = 4.5;	//From double to int (From more to less with data loss)
+//int d = b;		//From double to int (From more to less no data loss)
+//double e = 5.3;
+//int f = a + e;
+
+//		OTHER TYPES TO OUR TYPE
+//Single-argument constructor
+//Assignment operator (CopyAssignment)
+
+	int a = 2;//	No conversions
+	Fraction A = (Fraction)5;	//From int to Fraction  (From less to more)
+	A.print();
+	Fraction B;
+	B = (Fraction)3;
+	B.print();
+
+	//		OUR OBJECTS TO OTHER TYPES
+	//		type-cast operators
+
+	/*
+	---------------
+	operator type()
+	{
+		.....
+		.....
+	}
+	---------------
+	*/
+
+	int b = (int)B;
+	cout << b << endl;
+#endif // TYPE_CONVERSIONS
+
+#ifdef TYPE_CONVERSIONS_HOME_WORK
+	//Task1
+	Fraction A(2, 3, 4);
+	double a = A;
+	cout << a << endl;
+
+	//Task2
+	double b = 3.14;
+	Fraction B = b;
+	B.print();
+#endif // TYPE_CONVERSIONS_HOME_WORK
 
 }

@@ -109,7 +109,7 @@ double distance(const Point& A, const Point& B)
 }
 
 //#define STRUCT_POINT
-//#define DISTANCE_CHECK
+#define DISTANCE_CHECK
 //#define CONSTRUCTORS_CHECK
 //#define ASSIGNMENT_CHECK
 

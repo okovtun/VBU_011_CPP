@@ -3,11 +3,13 @@ https://www.youtube.com/watch?v=ZU9V-7zRbWM&list=PLeqyOOqxeiIPh7J3OThwKM89rq7VAH
 
 TODO:
 Для класса Fraction перегрузить следующие операторы:
-1. Arithmetical operators: +, -, *, /;
-2. Increment/Decrement: ++, --;
-3. Compound assignments: +=, -=, *=, /= (не забываем про повторное использование кода);
+1. Arithmetical operators: +, -, *, /;	DONE
+2. Increment/Decrement: ++, --;			DONE
+3. Compound assignments: +=, -=, *=, /= (не забываем про повторное использование кода); DONE
 4. Fraction A(2,3); cout << A << endl; *******
 5. Comparison oprators: ==, !=, >, <, >=, <=;
+6. Написать метод ... reduce(...), который сокращает дроби;
+7. Проверочный код в TYPE_CONVERSIONS_HOME_WORK должен заработать;
 
 DONE:
 1. Выучить теорию!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
