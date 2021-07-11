@@ -1,4 +1,5 @@
-﻿#include<iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS	//for strtok
+#include<iostream>
 using namespace std;
 using std::cin;
 using std::cout;
@@ -52,6 +53,15 @@ public:
 		this->numerator = 0;
 		this->denominator = 1;
 		cout << "1argConstructor:" << this << endl;
+	}
+	Fraction(double decimal)
+	{
+		decimal += 1e-10;
+		integer = decimal;
+		decimal -= integer;
+		denominator = 1e+9;
+		numerator = decimal * denominator;
+		reduce();
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -130,9 +140,13 @@ public:
 	}
 
 	//			Type-cast operators:
-	explicit operator int()
+	explicit operator int()const
 	{
 		return integer;
+	}
+	explicit operator double()const
+	{
+		return integer + (double)numerator / denominator;
 	}
 
 	//			Methods:
@@ -156,6 +170,31 @@ public:
 		denominator = buffer;
 		return *this;*/
 		return Fraction(denominator, numerator);
+	}
+	Fraction& reduce()
+	{
+		//https://www.webmath.ru/poleznoe/formules_12_7.php
+		int more, less,rest;
+		if (numerator > denominator)
+		{
+			more = numerator;
+			less = denominator;
+		}
+		else
+		{
+			less = numerator;
+			more = denominator;
+		}
+		do
+		{
+			rest = more % less;
+			more = less;
+			less = rest;
+		} while (rest);
+		int GCD = more;	//GCD - Greatest Common Divisor (Наибольший общий делитель)
+		numerator /= GCD;
+		denominator /= GCD;
+		return *this;
 	}
 	void print()const
 	{
@@ -251,6 +290,75 @@ Fraction operator/(Fraction left, Fraction right)
 	//return left * right.inverted();
 }
 
+bool operator==(const Fraction& left, const Fraction& right)
+{
+	//left.to_improper();
+	//right.to_improper();
+	///*if (left.get_numerator()*right.get_denominator() == right.get_numerator()*left.get_denominator())
+	//	return true;
+	//else
+	//	return false;*/
+	//return left.get_numerator()*right.get_denominator() == right.get_numerator()*left.get_denominator();
+	return (double)left == (double)right;
+}
+bool operator!=(const Fraction& left, const Fraction& right)
+{
+	return !(left == right);
+}
+bool operator>(const Fraction& left, const Fraction& right)
+{
+	return (double)left > (double)right;
+}
+bool operator<(const Fraction& left, const Fraction& right)
+{
+	return (double)left < (double)right;
+}
+bool operator>=(const Fraction& left, const Fraction& right)
+{
+	//return left > right || left == right;//БОЛЬШЕ ИЛИ РАВНО
+	return !(left < right);	//больше или равно - это НЕ меньше
+}
+bool operator<=(const Fraction& left, const Fraction& right)
+{
+	return !(left > right);
+}
+
+ostream& operator<<(ostream& os, const Fraction& obj)
+{
+	if (obj.get_integer())os << obj.get_integer();
+	if (obj.get_integer() && obj.get_numerator())os << "(";
+	if (obj.get_numerator())os << obj.get_numerator() << "/" << obj.get_denominator();
+	if (obj.get_integer() && obj.get_numerator())os << ")";
+	if (obj.get_integer() == 0 && obj.get_numerator() == 0)os << 0;
+	return os;
+}
+istream& operator>>(istream& is, Fraction& obj)
+{
+	const int n = 32;
+	char buffer[n] = {};
+	char delimiters[] = "(/) +";
+	char* number[5] = {};
+	cin.getline(buffer, n);
+	int i = 0;
+	for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters), i++)
+		number[i] = pch;
+	switch (i)
+	{
+	case 1:obj.set_integer(atoi(number[0])); break;
+	case 2:
+		obj.set_numerator(atoi(number[0]));
+		obj.set_denominator(atoi(number[1]));
+		break;
+	case 3:
+		obj.set_integer(atoi(number[0]));
+		obj.set_numerator(atoi(number[1]));
+		obj.set_denominator(atoi(number[2]));
+		break;
+	default: cout << "Error:" << endl;
+	}
+	return is;
+}
+
 int dva_plus_dva()
 {
 	return 2 + 2;
@@ -263,7 +371,9 @@ int dva_plus_dva()
 //#define OPTIMISATION_CHECK
 //#define TYPE_CONVERSIONS
 #define TYPE_CONVERSIONS_HOME_WORK
-
+//#define COMPARISON_OPERATORS
+//#define OUTPUT_CHECK
+//#define INPUT_CHECK
 
 void main()
 {
@@ -318,7 +428,7 @@ void main()
 	for (Fraction i(1, 4); i.get_integer() < 10; i++)
 	{
 		i.print();
-	}
+}
 #endif // INCREMENT_CHECK
 
 #ifdef COMPOUND_ASSIGNMENTS_CHECK
@@ -385,13 +495,50 @@ void main()
 #ifdef TYPE_CONVERSIONS_HOME_WORK
 	//Task1
 	Fraction A(2, 3, 4);
-	double a = A;
+	double a = (double)A;
 	cout << a << endl;
 
 	//Task2
-	double b = 3.14;
+	double b = 2.3;
 	Fraction B = b;
 	B.print();
 #endif // TYPE_CONVERSIONS_HOME_WORK
+
+#ifdef COMPARISON_OPERATORS
+	Fraction A(1, 2);
+	Fraction B(5,10);
+	/*if (A == B)
+	{
+		cout << "Дроби равны" << endl;
+	}
+	else
+	{
+		cout << "Дроби НЕ равны" << endl;
+	}*/
+	cout << (A == B) << endl;
+	cout << (A != B) << endl;
+	cout << (A > B) << endl;
+	cout << (A >= B) << endl;
+#endif // COMPARISON_OPERATORS
+
+#ifdef OUTPUT_CHECK
+	printf("Hello Fraction\n");
+	Fraction A;
+	cout << A << endl;
+	Fraction B(5);
+	cout << B << endl;
+	Fraction C(1, 2);
+	cout << C << endl;
+	Fraction D(2, 3, 4);
+	cout << D << endl;
+#endif
+
+#ifdef INPUT_CHECK
+	Fraction A;
+	cout << "Введите простую дробь: ";
+	cin >> A;
+	cout << "Вы ввели: " << A << endl;
+	cout << "Сокращенная дробь: " << A.reduce() << endl;
+#endif // INPUT_CHECK
 
 }
