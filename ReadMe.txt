@@ -3,10 +3,10 @@ https://www.youtube.com/watch?v=ZU9V-7zRbWM&list=PLeqyOOqxeiIPh7J3OThwKM89rq7VAH
 
 TODO:
 Реализовать класс String, описывающий строку:
-	String str;	//Создает пустую строку размером 80 Байт
-	String str1 = "Hello";
+	String str;	//Создает пустую строку размером 80 Байт	DONE
+	String str1 = "Hello";	DONE
 	cout << str1 << endl;
-	String str2 = "World";
+	String str2 = "World";	
 	cout << str2 << endl;
 	String str3 = str1 + str2;
 	cout << str3 << endl;
