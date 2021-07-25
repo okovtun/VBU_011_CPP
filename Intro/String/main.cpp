@@ -1,6 +1,9 @@
 ﻿#include<iostream>
 using namespace std;
 
+class String;
+String operator+(const String& left, const String& right);
+
 class String
 {
 	unsigned int size;	//Размер строки в Байтах
@@ -24,7 +27,7 @@ public:
 		this->str = new char[size] {};
 		cout << "DefConstructor:\t" << this << endl;
 	}
-	String(const char* str)
+	String(const char* str)	//Константный указатель на char - это стрококвая константа
 	{
 		//while (str[size++]);
 		this->size = strlen(str) + 1;	//+1 потому что this->size хранит размер в Байтах, 
@@ -60,6 +63,19 @@ public:
 		cout << "CopyAssignment: " << this << endl;
 		return *this;
 	}
+	String& operator+=(const String& other)
+	{
+		return *this = *this + other;
+	}
+	//Оператор квадратные cкобки (Оператор интдексирования - Subscript operator) возвращает значение по индексу
+	const char& operator[](unsigned int i)const //i - index
+	{
+		return str[i];
+	}
+	char& operator[](unsigned int i)//i - index
+	{
+		return str[i];
+	}
 
 	//			Methods:
 	void print()const
@@ -75,12 +91,13 @@ ostream& operator<<(ostream& os, const String& obj)
 String operator+(const String& left, const String& right)
 {
 	//1) Создаем строку, в которую поместим результат:
-	String cat(left.get_size() + right.get_size() - 1);
+	String cat(left.get_size() + right.get_size() - 1);	//Локальный объект
 	for (int i = 0; i < left.get_size(); i++)
 		cat[i] = left[i];
 		//cat.get_str()[i] = left.get_str()[i];
 	for (int i = 0; i < right.get_size(); i++)
-		cat.get_str()[i + left.get_size() - 1] = right.get_str()[i];
+		cat[i + left.get_size() - 1] = right[i];
+		//cat.get_str()[i + left.get_size() - 1] = right.get_str()[i];
 	return cat;
 }
 
@@ -119,7 +136,11 @@ void main()
 	cout << str1 << endl;
 	String str2 = "World";
 	cout << str2 << endl;
-
-	String str3 = str1 + str2;
-	cout << str3 << endl;
+	/*cout << "\n------------------------------------\n";
+	String str3 = str1 + " " + str2;
+	cout << "\n------------------------------------\n";
+	cout << str3 << endl;*/
+	//cout << str1 + str2 << endl;
+	str1 += str2;
+	cout << str1 << endl;
 }

@@ -2,13 +2,18 @@
 https://www.youtube.com/watch?v=ZU9V-7zRbWM&list=PLeqyOOqxeiIPh7J3OThwKM89rq7VAHNth&index=1
 
 TODO:
+Реализовать класс Matrix, описывающий матрицу.
+Обеспечить операции над матрицами + - * /
+Написать метод ??? determinant(); который вычисляет определитель матрицы.
+
+DONE:
 Реализовать класс String, описывающий строку:
 	String str;	//Создает пустую строку размером 80 Байт	DONE
 	String str1 = "Hello";	DONE
-	cout << str1 << endl;
+	cout << str1 << endl;	DONE
 	String str2 = "World";	
 	cout << str2 << endl;
-	String str3 = str1 + str2;
+	String str3 = str1 + str2;	DONE
 	cout << str3 << endl;
 
 DONE:
