@@ -49,7 +49,7 @@ public:
 	}
 
 	//				Methods:
-	void print()const
+	virtual void print()const
 	{
 		cout << last_name << " " << first_name << ", " << age;
 		print_year_suffix(age);
@@ -203,15 +203,21 @@ public:
 	}
 };
 
+//#define INHERITANCE
+#define POLYMORPHISM
+
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef INHERITANCE
 	cout << "Наследование" << endl;
 	Human vasya("Тупенко", "Василий", 22);
 	vasya.print();
+
 	cout << delimiter << endl;
 	Student student("Иванов", "Федор", 25, "РПО", "ВБУ_011", 90);
 	student.print();
+
 	cout << delimiter << endl;
 	Teacher	teacher("Einstein", "Albert", 142, "Astronomy", 112);
 	teacher.print();
@@ -219,4 +225,19 @@ void main()
 	cout << delimiter << endl;
 	Graduate graduate("Musk", "Elon", 34, "Car building", "VBU_011", 98, "Колонизация марса");
 	graduate.print();
+#endif // INHERITANCE
+
+	Human* group[] =
+	{
+		new Student("Галлямутдинова", "Альбина", 25, "РПО", "ВБУ_011", 95),
+		new Graduate("Ремизов", "Дмитрий", 27, "РПО", "ВБУ_011", 95, "Фиг его значет ;-)"),
+		new Teacher("Einstein", "Albert", 142, "Astronomy", 112),
+		new Student("Сорокина", "Мария", 22, "РПО", "ВБУ_011", 98)
+	};
+
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		group[i]->print();
+		cout << delimiter << endl;
+	}
 }
