@@ -21,25 +21,21 @@ public:
 	{
 		return str;
 	}
-	explicit String(unsigned int size = 80)
+	explicit String(unsigned int size = 80) :size(size), str(new char[size] {})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		cout << "DefConstructor:\t" << this << endl;
 	}
-	String(const char* str)	//Константный указатель на char - это стрококвая константа
+	String(const char* str) :size(strlen(str) + 1), str(new char[size] {})
 	{
-		//while (str[size++]);
-		this->size = strlen(str) + 1;	//+1 потому что this->size хранит размер в Байтах, 
-										//а strlen() считает размер в символах
-		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "1argConstructor:" << this << endl;
 	}
-	String(const String& other)
+	String(const String& other) :size(other.size), str(new char[size] {})
 	{
-		this->size = other.size;
-		this->str = new char[size] {};
+		//this->size = other.size;
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
