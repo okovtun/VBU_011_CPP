@@ -1,6 +1,9 @@
 ﻿#include<iostream>
 #include<string>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define delimiter "\n----------------------------------------------\n"
 
@@ -204,11 +207,12 @@ public:
 };
 
 //#define INHERITANCE
-#define POLYMORPHISM
+//#define POLYMORPHISM
 
 void main()
 {
 	setlocale(LC_ALL, "");
+
 #ifdef INHERITANCE
 	cout << "Наследование" << endl;
 	Human vasya("Тупенко", "Василий", 22);
@@ -227,6 +231,7 @@ void main()
 	graduate.print();
 #endif // INHERITANCE
 
+#ifdef POLYMORPHISM
 	Human* group[] =
 	{
 		new Student("Галлямутдинова", "Альбина", 25, "РПО", "ВБУ_011", 95),
@@ -240,4 +245,18 @@ void main()
 		group[i]->print();
 		cout << delimiter << endl;
 	}
+#endif // POLYMORPHISM
+
+#define DataType unsigned long long int
+	//typedef double DataType;	//Директива typedef создает псевдоним для существующего типа данных.
+	DataType arr[] = { 2,3,5,8,13,21,34 };
+	for (int i = 0; i < sizeof(arr)/sizeof(DataType); i++)
+	{
+		cout << arr[i] << "\t";
+	}
+	cout << endl;
 }
+
+//virtual type name(parameters) = 0;
+//virtual type name(parameters) modifiers = 0;
+//virtual type name(parameters) const = 0;
