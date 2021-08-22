@@ -15,9 +15,9 @@ namespace Geometry
 		CONSOLE_GREEN = 0xAA,
 		CONSOLE_BLUE = 0x99,
 
-		RED		= 0x000000FF,	//0xAlphaBlueGreenRed
-		GREEN	= 0x0000FF00,
-		BLUE	= 0x00FF0000
+		RED = 0x000000FF,	//0xAlphaBlueGreenRed
+		GREEN = 0x0000FF00,
+		BLUE = 0x00FF0000
 	};
 
 	class Shape
@@ -120,6 +120,80 @@ namespace Geometry
 	{
 
 	};
+
+	class Triangle :public Shape
+	{
+	public:
+		Triangle(Color color) :Shape(color) {}
+		~Triangle() {}
+
+		virtual double get_height()const = 0;
+	};
+	class EquilateralTriangle :public Triangle
+	{
+		double side;
+	public:
+		double get_side()const
+		{
+			return side;
+		}
+		double set_side(double side)
+		{
+			if (side <= 0)side = 1;
+			this->side = side;
+			return this->side;
+		}
+		EquilateralTriangle(double side, Color color) :Triangle(color)
+		{
+			set_side(side);
+		}
+		~EquilateralTriangle()
+		{
+
+		}
+		double get_height()const
+		{
+			return sqrt(3) / 2 * side;
+		}
+		double get_area()const
+		{
+			return get_height()*side / 2;
+		}
+		double get_perimeter()const
+		{
+			return side * 3;
+		}
+		void draw()const
+		{
+			HWND hwnd = GetDesktopWindow();
+			hwnd = GetConsoleWindow();
+			//hwnd = FindWindow(NULL, L"Inheritance - Microsoft Visual Studio");
+			HDC hdc = GetDC(hwnd);
+
+			HPEN hPen = CreatePen(PS_SOLID, 5, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			unsigned int start_x = 400;
+			unsigned int start_y = 400;
+
+			POINT points[] =
+			{
+				{start_x, start_y + side},
+				{start_x + side, start_y + side},
+				{start_x + side / 2, start_y + side - get_height()}
+			};
+
+			Polygon(hdc, points, sizeof(points) / sizeof(POINT));
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+	};
 }
 
 void main()
@@ -134,5 +208,10 @@ void main()
 	cout << "Периметр квадрата:" << square.get_perimeter() << endl;
 	square.draw();
 
-//	Geometry::Rectangle rect;
+	Geometry::EquilateralTriangle e3(100, Geometry::Color::GREEN);
+	cout << "Длина стороны:    " << e3.get_side() << endl;
+	cout << "Площадь квадрата: " << e3.get_area() << endl;
+	cout << "Периметр квадрата:" << e3.get_perimeter() << endl;
+	e3.draw();
+	//	Geometry::Rectangle rect;
 }
