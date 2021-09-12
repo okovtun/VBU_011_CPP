@@ -6,14 +6,18 @@ https://www.youtube.com/watch?v=ZU9V-7zRbWM&list=PLeqyOOqxeiIPh7J3OThwKM89rq7VAH
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 TODO:
+В Solution 'DataContainers' добавить проект 'List' и реализовать в нем двусвязый список;
+
+TODO:
 1. В класс ForwardList добавить следующие методы:
-	void push_back(???);
-	void pop_front();
-	void pop_back();
-	void insert(???);
+	void push_back(???);	DONE
+	void pop_front();		DONE
+	void pop_back();		DONE
+	void insert(???);		DONE
 	void erase(???);
-2. Написать деструктор;
+2. Написать деструктор;		DONE
 3. Написать CopyMethods и MoveMethods;
+4. Оптимизировать алгоитмы добавления элемента в методах push_front() и push_back() до одной строки кода;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////	INHERITANCE & POLYMORPHISM	////////////////////////////////////////
