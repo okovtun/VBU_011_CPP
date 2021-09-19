@@ -6,6 +6,14 @@ https://www.youtube.com/watch?v=ZU9V-7zRbWM&list=PLeqyOOqxeiIPh7J3OThwKM89rq7VAH
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 TODO:
+1. Реализовать методы insert и erase;
+1. В классе List реализовать ReverseIterator, который позволит выводить список в обратном направлении 
+   (от Хвоста до Головы);
+2. В классе ForwardList реализовать Iterator;
+
+http://unattendedxp.com/articles/wxpcd/unattended.shtml
+
+DONE:
 В Solution 'DataContainers' добавить проект 'List' и реализовать в нем двусвязый список;
 
 TODO:
