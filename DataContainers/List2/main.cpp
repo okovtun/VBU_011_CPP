@@ -186,20 +186,21 @@ public:
 	{
 		cout << "Адрес начала списка: " << Head << endl;
 		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
-		//for (Element* Temp = Head; Temp; Temp++)
+			//for (Element* Temp = Head; Temp; Temp++)
 			cout << Temp->pPrev << "\t" << Temp << "\t" << Temp->Data << "\t" << Temp->pNext << endl;
 		cout << "Количество элементов списка: " << this->size << endl;
 	}
 	void reverse_print()const
 	{
 		cout << "Адрес конца списка: " << Tail << endl;
-		for(Element* Temp = Tail; Temp; Temp = Temp->pPrev)
+		for (Element* Temp = Tail; Temp; Temp = Temp->pPrev)
 			cout << Temp->pPrev << "\t" << Temp << "\t" << Temp->Data << "\t" << Temp->pNext << endl;
 		cout << "Количество элементов списка: " << this->size << endl;
 	}
 };
 
 //#define BASE_CHECK
+//#define INTERATORS_CHECK
 
 void main()
 {
@@ -217,6 +218,7 @@ void main()
 	list.reverse_print();
 #endif // BASE_CHECK
 
+#ifdef INTERATORS_CHECK
 	List list = { 3,5,8,13,21 };
 	list = list;
 	list.print();
@@ -230,4 +232,35 @@ void main()
 	}
 	cout << endl;
 	list2.reverse_print();
+#endif // INTERATORS_CHECK
+
+	double arr[] = { 3.5, 5.8, 8.8, 13.2, 21.9 };
+	cout << sizeof(arr) << endl;
+	for (int i = 0; i < sizeof(arr) / sizeof(*arr); i++)
+	{
+		//cout << arr[i] << "\t";
+		cout << *(arr + i) << "\t";
+	}
+	cout << endl;
+	for (double i : arr)	//Range-based for intended to work only with containers.
+	{
+		cout << i << "\t";
+	}
+	cout << endl;
+
+	/*
+	-----------------------------------------
+	for(type i:container)
+	{
+		//i - iterator;
+	}
+	-----------------------------------------
+	*/
+
+	List list = { 0,1,1,2,3,5,8,13,21 };
+	for (int i : list)
+	{
+		cout << i << "\t";
+	}
+	cout << endl;
 }

@@ -30,6 +30,52 @@ class ForwardList
 	Element* Head;	//Голова списка - указывает на начальный (нулевой) элемент списка.
 	size_t size;
 public:
+	class Iterator
+	{
+		Element* Temp;
+	public:
+		Iterator(Element* Temp = nullptr) :Temp(Temp)
+		{
+			cout << "ItConstructor:\t" << this << endl;
+		}
+		~Iterator()
+		{
+			cout << "ItDestructor:\t" << this << endl;
+		}
+		Iterator& operator++()//Prefix increment
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		Iterator operator++(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+
+		bool operator==(const Iterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const Iterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
+
+		int& operator*()
+		{
+			return Temp->Data;
+		}
+	};
+	Iterator begin()
+	{
+		return this->Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
 	ForwardList()
 	{
 		//Конструктор по умолчанию, создает пустой список.
@@ -151,6 +197,7 @@ public:
 	}
 };
 
+#define delimiter "\n----------------------------------------------\n"
 //#define BASE_CHECK
 
 void main()
@@ -175,8 +222,22 @@ void main()
 
 	ForwardList list = { 3,5,8,13,21 };
 	list.print();
-	ForwardList list2;
+	cout << delimiter << endl;
+	for (int i : list)
+	{
+		cout << i << "\t";
+	}
+	cout << endl;
+	cout << delimiter << endl;
+	//for (ForwardList::Iterator it = list.begin(), end = list.end(); it != end; ++it)
+	/*for (ForwardList::Iterator it = list.begin(); it != list.end(); it++)
+	{
+		cout << *it << "\t";
+	}
+	cout << endl;*/
+	cout << delimiter << endl;
+	/*ForwardList list2;
 	list2 = list;
-	list2.print();
+	list2.print();*/
 
 }
